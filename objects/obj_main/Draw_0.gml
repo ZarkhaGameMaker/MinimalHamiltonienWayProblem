@@ -1,7 +1,7 @@
 /// DRAW
 
 // best path
-draw_set_color(c_blue);
+draw_set_color($ff5555);
 for(var i = 0; i < points_number-1; i++)
 {
 	var index = order[i];
