@@ -1,70 +1,43 @@
-/// CREATE
-random_set_seed(75739374);
+/// @desc
 
-points = [
-    //[1920*0.22, 1080*0.32],
-    //[1920*0.57, 1080*0.69],
-    //[1920*0.39, 1080*0.80],
-    //[1920*0.15, 1080*0.43],
-    //[1920*0.48, 1080*0.23],
-    //[1920*0.43, 1080*0.35],
-    //[1920*0.58, 1080*0.43],
-    //[1920*0.72, 1080*0.56],
-    //[1920*0.33, 1080*0.51],
-    //[1920*0.50, 1080*0.51],
-];
-
-for(var i = 0; i < 32; i++)
+// Fonction pour calculer la distance total du chemin courant.
+#region
+function path_calculate(array)
 {
-	array_push(points, [1920/2 - 1500/2 + 1500*(random(0.5)+0.25), 1080/2 - 1500/2 + 1500*(random(0.5)+0.25)])
+	var dis = 0;
+	for(var i = 0; i < point_number-2; i++)
+	{
+		var p1 = array[i];
+		var p2 = array[i+1];
+		dis   += point_distance(p1[0], p1[1], p2[0], p2[1]);
+	}
+	return(dis);
+}
+#endregion
+
+// init random
+random_set_seed(7837359);
+
+// var
+point_number  = 64;
+point_array   = [];
+point1_index  = 0;
+point2_index  = 0;
+path_distance = -1;
+
+// add random point
+for(var i = 0; i < point_number; i++)
+{
+	var len = sqrt(random(1)) * 512;
+	var dir = irandom(359);
+	var xx  = 1920/2 + lengthdir_x(len, dir);
+	var yy  = 1080/2 + lengthdir_y(len, dir);
+	array_push(point_array, [xx, yy]);
+	//array_push(point_index, i);
 }
 
-points_number = array_length(points);
-points        = array_shuffle(points, 0, points_number);
-order         = []; for(var i = 0; i < points_number; i++) { order[i] = i; }
-best_length   = infinity;
-best_path     = [];
-done          = false;
-state         = 0;
-elagage_index = false;
-elagage_value = false;
+// first, randomize index
+array_shuffle(point_array, 0, array_length(point_array));
 
-/// ============================================================================================================
-function next_permutation(arr)
-{
-    // 1. Trouver le plus grand k tel que (arr[k] < arr[k+1])
-    var k = -1;
-    for(var i=points_number-2; i>=0; i--)
-	{
-        if (arr[i] < arr[i+1]) { k = i; break; }
-    }
-    if(k == -1) return false; // plus de permutations
-    
-    // 2. Trouver le plus grand l tel que (arr[k] < arr[l])
-    var l = -1;
-    for(var j=points_number-1; j>k; j--)
-	{
-        if(arr[k] < arr[j]) { l = j; break; }
-    }
-    
-    // 3. Swap arr[k], arr[l]
-    var tmp = arr[k];
-    arr[k] = arr[l];
-    arr[l] = tmp;
-    
-    // 4. Inverser la séquence après k
-    var _start = k+1;
-    var _end   = points_number-1;
-    while(_start < _end)
-	{
-        tmp = arr[_start];
-        arr[_start] = arr[_end];
-        arr[_end] = tmp;
-        _start++;
-        _end--;
-    }
-	
-	//show_debug_message($"k: {k} / l: {l} / array: {arr}");
-    
-    return true;
-}
+// calculate the path
+path_distance = infinity;

@@ -35,6 +35,7 @@
   },
   "name":"MinimalHamiltonienWayProblem",
   "resources":[
+    {"id":{"name":"obj_main_bruteForce","path":"objects/obj_main_bruteForce/obj_main_bruteForce.yy",},},
     {"id":{"name":"obj_main","path":"objects/obj_main/obj_main.yy",},},
     {"id":{"name":"Room1","path":"rooms/Room1/Room1.yy",},},
   ],

@@ -1,51 +1,30 @@
-/// STEP ============================================================================================================
+/// @desc
 
-// à chaque step, tester la prochaine permutation
-switch(state)
+// copy array
+var point_array_copy = [];
+array_copy(point_array_copy, 0, point_array, 0, point_number);
+
+// swap 2 points
+var tmp                        = point_array_copy[point1_index];
+point_array_copy[point1_index] = point_array_copy[point2_index];
+point_array_copy[point2_index] = tmp;
+
+// calculate distance path
+var dis = path_calculate(point_array_copy);
+
+// check
+if(dis < path_distance)
 {
-	case 0: // calcule
-		if(next_permutation(order))
-		{
-			// length
-			var length = 0;
-			for(var i = 0; i < array_length(order)-1; i++)
-			{
-			    var p1 = points[order[i]];
-			    var p2 = points[order[i+1]];
-			    length += point_distance(p1[0], p1[1], p2[0], p2[1]);
-				if(length > best_length)
-				{
-					//elagage_index = i+1;
-					//elagage_value = order[elagage_index];
-					//state = 1;
-					break;
-				}
-			}
-			
-			// check
-		    if(length < best_length)
-			{
-		        best_length = length;
-		        best_path   = [];
-				
-				array_copy(best_path, 0, order, 0, points_number);
-				show_debug_message(best_length);
-		    }
-		}
-		else { state = 2; show_debug_message($"time: {current_time}"); }
-	break;
-	
-	case 1: // elagage
-		if(next_permutation(order))
-		{
-			if(order[elagage_index] != elagage_value) { state = 0; }
-		}
-		else { state = 2; show_debug_message($"time: {current_time}"); }
-	break;
-		
-	case 2: // end
-	
-	break;
+	point_array   = point_array_copy;
+	path_distance = dis;
 }
 
-if(keyboard_check_pressed(vk_enter)) { game_restart(); }
+// incress point_index
+if(point1_index < point_number-1) { point1_index++; }
+else
+{
+	point1_index = 0;
+	
+	if(point2_index < point_number-1) { point2_index++; }
+	else                              { point2_index = 0; }
+}
