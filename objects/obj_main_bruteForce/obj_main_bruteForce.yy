@@ -10,8 +10,8 @@
   "name":"obj_main_bruteForce",
   "overriddenProperties":[],
   "parent":{
-    "name":"Objects",
-    "path":"folders/Objects.yy",
+    "name":"brutForce",
+    "path":"folders/Objects/brutForce.yy",
   },
   "parentObjectId":null,
   "persistent":false,

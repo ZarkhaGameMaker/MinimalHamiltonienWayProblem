@@ -1,19 +1,12 @@
-/// @desc
-draw_set_color(c_lime);
-for(var i = 0; i < point_number-1; i++)
-{
-	var p1 = point_array[i];	
-	var p2 = point_array[i+1];
-	draw_line_width(p1[0], p1[1], p2[0], p2[1], 4);
-}
+// @desc
 
+// point
 draw_set_color(c_white);
 for(var i = 0; i < point_number; i++)
 {
-	var point = point_array[i];
-	draw_circle(point[0], point[1], 8, false);
+	var p = point_array[i];
+	draw_circle(p.x, p.y, 8, false);
 }
 
-draw_text(10, 10, string(fps_real));
-draw_text(10, 30, string(point1_index));
-draw_text(10, 50, string(point2_index));
+// circle
+draw_circle(1920/2, 1080/2, 400, true);
