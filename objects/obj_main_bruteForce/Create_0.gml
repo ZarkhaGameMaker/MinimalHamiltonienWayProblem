@@ -14,7 +14,7 @@ points = [
     //[1920*0.50, 1080*0.51],
 ];
 
-points_number    = 6;
+points_number    = 7;
 points           = array_shuffle(points, 0, points_number);
 order            = []; for(var i = 0; i < points_number; i++) { order[i] = i; }
 best_length      = infinity;
@@ -35,36 +35,39 @@ function next_permutation(arr)
 {
 	if(elagage)
 	{
-		//elagage = false;
-		//if(elagage_value < points_number-1)
+		elagage = false;
+		
+		for(var i = elagage_index; i > 0; i--)
+		{
+			order[i]++;
+		}
+		
+		//// get index already exist | [3,1,x,x,x] -> [0 = undefined, 1 = true, 2 = undefined, 3 = true, 4 = undefined]
+		//indexExist[points_number-1] = undefined;
+		//for(var i = 0; i < elagage_index; i++) { indexExist[order[i]] = true; }
+		//	
+		//// [3,-1-,2,4,0] -> [3,-2-,2,4,0]
+		//order[elagage_index]++;
+		//	
+		//if(order[elagage_index] == points_number)
 		//{
-		//	// get index already exist | [3,1,x,x,x] -> [0 = undefined, 1 = true, 2 = undefined, 3 = true, 4 = undefined]
-		//	indexExist[points_number-1] = undefined;
-		//	for(var i = 0; i <= elagage_index; i++) { indexExist[order[i]] = true; }
 		//	
-		//	order[elagage_index]++; // [3,1,2,4,0] -> [3,2,2,4,0]
+		//}
 		//	
-		//	show_debug_message(elagage_index);
+		//show_debug_message(elagage_index);
 		//	
-		//	// erase and rebuild next permut | [3,2,x,x,x] -> [3,2,0,1,4]
-		//	for(var i = elagage_index+1; i < points_number; i++)
+		//// erase and rebuild next permut | [3,2,x,x,x] -> [3,2,0,1,4]
+		//for(var i = elagage_index+1; i < points_number; i++)
+		//{
+		//	for(var j = 0; j < points_number; j++)
 		//	{
-		//		for(var j = 0; j < points_number; j++)
-		//		{
-		//			if(indexExist[j]) { continue; }
-		//			order[i]      = j;
-		//			indexExist[j] = true;
-		//			break;
-		//		}
+		//		if(indexExist[j]) { continue; }
+		//		order[i]      = j;
+		//		indexExist[j] = true;
+		//		break;
 		//	}
-		//	show_debug_message("---");
 		//}
-		//else
-		//{
-		//	order[elagage_index-1]++;
-		//	order[elagage_index  ] = 0;
-		//	for(var i = elagage_index+1; i < points_number; i++) { order[i]++; }
-		//}
+		//show_debug_message("---");
 		//
 		//show_debug_message($"array: {order}");
 		//return true;
