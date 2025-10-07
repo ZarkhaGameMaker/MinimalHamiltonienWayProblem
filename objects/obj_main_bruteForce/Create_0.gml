@@ -14,7 +14,7 @@ points = [
     //[1920*0.50, 1080*0.51],
 ];
 
-points_number    = 10;
+points_number    = 12;
 points           = array_shuffle(points, 0, points_number);
 order            = []; for(var i = 0; i < points_number; i++) { order[i] = i; }
 best_length      = infinity;
@@ -122,8 +122,6 @@ function next_permutation(arr)
 	        _start++;
 	        _end--;
 	    }
-	
-		show_debug_message($"k: {k} / l: {l} / array: {arr}");
 	}
 	
 	return true;
