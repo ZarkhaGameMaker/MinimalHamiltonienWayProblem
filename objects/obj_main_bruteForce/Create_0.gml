@@ -37,14 +37,42 @@ function next_permutation(arr)
 	{
 		elagage = false;
 		
+		// get index already exist | [3,1,x,x,x] -> [0 = undefined, 1 = true, 2 = undefined, 3 = true, 4 = undefined]
+		indexExist = array_create(point_number, false);
+		for(var i = 0; i < elagage_index; i++) { indexExist[order[i]] = true; }
+		
+		// on obtient un array qui informe a quel index se trouve le point_index dans l'array order. pour [2, 4, 5, 1, 0, 3] on obtient un array [4, 3, 0, 5, 1, 2]
+		arrayIndexIndex = array_create(points_number, false);
+		for(var i = 0; i < points_number; i++) { arrayIndexIndex[order[i]] = i; }
+		
+		// add | elagage_index fait parti de la gauche.
+		// [0, 4, 2, 6, 8,     9, 7, 3, 1, 5] ok
+		// [0, 4, 9, 8, 7,     6, 2, 3, 1, 5] ok
+		// [3, 4, 2, 9, 8,     6, 7, 0, 1, 5] 
+		
+		var breakFor;
 		for(var i = elagage_index; i > 0; i--)
 		{
-			order[i]++;
+			breakFor = true;
+			
+			do
+			{
+				order[i] = (order[i]+1) mod points_number;
+				if(order[i] == 0) { breakFor = false; }
+			}
+			until(arrayIndexIndex[order[i]] > elagage_index)
+			
+			// ici on swip les valeurs dans les arrays, et on update l'emplacement des index dans l'array.
+			
+			if(breakFor) { break; }
 		}
 		
-		//// get index already exist | [3,1,x,x,x] -> [0 = undefined, 1 = true, 2 = undefined, 3 = true, 4 = undefined]
-		//indexExist[points_number-1] = undefined;
-		//for(var i = 0; i < elagage_index; i++) { indexExist[order[i]] = true; }
+		if(order == 0)
+		{
+			if(i > 1) { order[i-1]++; }
+			else { } // si on est déjà a l'index 0, ça veux dire que l'élagage va jusqu'à la fin. Donc fin total de la recherche de chemin.
+ 		}
+		
 		//	
 		//// [3,-1-,2,4,0] -> [3,-2-,2,4,0]
 		//order[elagage_index]++;
