@@ -1,5 +1,5 @@
 /// CREATE
-random_set_seed(75739374);
+random_set_seed(1);
 
 points = [
     //[1920*0.22, 1080*0.32],
@@ -14,7 +14,7 @@ points = [
     //[1920*0.50, 1080*0.51],
 ];
 
-points_number    = 7;
+points_number    = 10;
 points           = array_shuffle(points, 0, points_number);
 order            = []; for(var i = 0; i < points_number; i++) { order[i] = i; }
 best_length      = infinity;
@@ -24,6 +24,7 @@ state            = 0;
 elagage_index    = false;
 elagage_value    = false;
 elagage          = false;
+best_path_finded = false;
 
 for(var i = 0; i < points_number; i++)
 {
@@ -37,70 +38,58 @@ function next_permutation(arr)
 	{
 		elagage = false;
 		
-		// get index already exist | [3,1,x,x,x] -> [0 = undefined, 1 = true, 2 = undefined, 3 = true, 4 = undefined]
-		indexExist = array_create(point_number, false);
-		for(var i = 0; i < elagage_index; i++) { indexExist[order[i]] = true; }
-		
 		// on obtient un array qui informe a quel index se trouve le point_index dans l'array order. pour [2, 4, 5, 1, 0, 3] on obtient un array [4, 3, 0, 5, 1, 2]
-		arrayIndexIndex = array_create(points_number, false);
-		for(var i = 0; i < points_number; i++) { arrayIndexIndex[order[i]] = i; }
-		
+		arrayMapping = array_create(points_number, false);
+		for(var i = 0; i < points_number; i++) { arrayMapping[order[i]] = i; }
+
 		// add | elagage_index fait parti de la gauche.
-		// [0, 4, 2, 6, 8,     9, 7, 3, 1, 5] ok
-		// [0, 4, 9, 8, 7,     6, 2, 3, 1, 5] ok
-		// [3, 4, 2, 9, 8,     6, 7, 0, 1, 5] 
-		
 		var breakFor;
-		for(var i = elagage_index; i > 0; i--)
+		var prev_value;
+		for(var i = elagage_index; i >= 0; i--)
 		{
-			breakFor = true;
+			breakFor   = true;
+			prev_value = order[i];
 			
 			do
 			{
 				order[i] = (order[i]+1) mod points_number;
-				if(order[i] == 0) { breakFor = false; }
+				if(order[i] == 0)
+				{
+					if(i == 0) { return false; }
+					breakFor = false;
+				}
 			}
-			until(arrayIndexIndex[order[i]] > elagage_index)
+			until(arrayMapping[order[i]] > elagage_index)
 			
 			// ici on swip les valeurs dans les arrays, et on update l'emplacement des index dans l'array.
+			order[arrayMapping[order[i]]] = prev_value;
 			
+			// MAJ du mapping :
+			var tmp                  = arrayMapping[order[i]];
+			arrayMapping[order[i]]   = arrayMapping[prev_value];
+			arrayMapping[prev_value] = tmp;
+			
+			// Break or continue
 			if(breakFor) { break; }
+			
+			elagage_index--;
 		}
 		
-		if(order == 0)
-		{
-			if(i > 1) { order[i-1]++; }
-			else { } // si on est déjà a l'index 0, ça veux dire que l'élagage va jusqu'à la fin. Donc fin total de la recherche de chemin.
- 		}
+		if(elagage_index == -1) { return false; }
 		
-		//	
-		//// [3,-1-,2,4,0] -> [3,-2-,2,4,0]
-		//order[elagage_index]++;
-		//	
-		//if(order[elagage_index] == points_number)
-		//{
-		//	
-		//}
-		//	
-		//show_debug_message(elagage_index);
-		//	
-		//// erase and rebuild next permut | [3,2,x,x,x] -> [3,2,0,1,4]
-		//for(var i = elagage_index+1; i < points_number; i++)
-		//{
-		//	for(var j = 0; j < points_number; j++)
-		//	{
-		//		if(indexExist[j]) { continue; }
-		//		order[i]      = j;
-		//		indexExist[j] = true;
-		//		break;
-		//	}
-		//}
-		//show_debug_message("---");
-		//
-		//show_debug_message($"array: {order}");
-		//return true;
+		// On trie la partie droite du tableau.
+		var left  = [];
+		var right = [];
+		for(var i = 0; i < points_number; i++)
+		{
+			if(i <= elagage_index) { array_push(left , order[i]); }
+			else                   { array_push(right, order[i]); }
+		}
+		
+		array_sort(right, true); // 0, 1, 2...
+		order = array_concat(left, right);
 	}
-	else
+ 	else
 	{
 	    // 1. Trouver le plus grand k tel que (arr[k] < arr[k+1])
 	    var k = -1;

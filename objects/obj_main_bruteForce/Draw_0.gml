@@ -1,8 +1,6 @@
 /// DRAW
 
 // current path
-if(false)
-{
 draw_set_color(c_lime);
 for(var i = 0; i < points_number-1; i++)
 {
@@ -15,21 +13,24 @@ for(var i = 0; i < points_number-1; i++)
 	draw_line_width(p1[0], p1[1], p2[0], p2[1], 8);
 }
 draw_set_color(c_white);
-}
 
 // best path
-draw_set_color($ff5555);
-for(var i = 0; i < points_number-1; i++)
+if(!best_path_finded)
 {
-	var index = order[i];
-	var p1    = points[index];
+	draw_set_color($ff5555);
+	for(var i = 0; i < points_number-1; i++)
+	{
+		var index = order[i];
+		var p1    = points[index];
 	
-	var index = order[i+1];
-	var p2    = points[index];
+		var index = order[i+1];
+		var p2    = points[index];
 	
-	draw_line_width(p1[0], p1[1], p2[0], p2[1], 4);
+		draw_line_width(p1[0], p1[1], p2[0], p2[1], 4);
+	}
 }
 draw_set_color(c_white);
+
 
 // point
 for(var i = 0; i < points_number; i++)
